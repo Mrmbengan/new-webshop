@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from '../../utils/firebase/firebase.utils';
 import FormInput from '../form-input/form-input.component';
 import './sign-up-form.styles.scss';
+import Button from '../button/button.component';
 
 
 
@@ -85,7 +86,7 @@ const SignUpForm = () => {
                 value={confirmPassword} 
             />
 
-            <button type="submit">Sign up</button>
+            <Button type="submit">Sign up</Button>
     
             
             <p>By signing up, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
