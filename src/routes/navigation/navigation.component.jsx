@@ -1,7 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import { Outlet, Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import ButtonImage from '../../assets/MepplClothing2.png';
+import { UserContext } from "../../context/user.context";
+import { signOutUser } from "../../utils/firebase/firebase.utils";
 import './navigation.styles.scss';
 
 const Navigation = () => {
@@ -9,6 +11,7 @@ const Navigation = () => {
   const handleButtonClick = () => {
     navigate('/');
   };
+  const { currentUser } = useContext(UserContext);
 
     return (
       <Fragment>
@@ -20,9 +23,15 @@ const Navigation = () => {
             <Link className="nav-link" to='/shop'>
               Shop
             </Link>
+            {currentUser ? (
+              <span className="nav-link" onClick={signOutUser}>
+                Sign Out
+              </span>
+            ) : (
             <Link className="nav-link" to='/auth'>
               Sign In 
             </Link>
+            )}
           </div>
         </div>
         <Outlet />
