@@ -7,9 +7,10 @@ import {
     createUserWithEmailAndPassword, 
     signInWithEmailAndPassword, 
     signOut, 
-    onAuthStateChanged
+    onAuthStateChanged,
+
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, collection, query, getDocs } from 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyD5MoZ5LmvZrnjKcPgBCCaH0dS3oxl-7FI",
@@ -33,9 +34,26 @@ const firebaseConfig = {
 
     export const db = getFirestore();
 
-    export const createUserDocumentFromAuth = async (userAuth, additionalInformation) => {
-        if (!userAuth) return;
+    
 
+    export const getCategoriesAndDocuments = async () => {
+        const collectionRef = collection(db, 'categories');
+        const q = query(collectionRef);
+
+        const querySnapshot = await getDocs(q);
+        const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+            const { title, items } = docSnapshot.data();
+            acc[title.toLowerCase()] = items;
+            return acc;
+        }, {});
+        return categoryMap;
+    };
+
+    export const createUserDocumentFromAuth = async (
+        userAuth, 
+        additionalInformation = {}
+        ) => {
+        if (!userAuth) return;
 
         const userDocRef = doc(db, 'users', userAuth.uid);
 
@@ -52,10 +70,11 @@ const firebaseConfig = {
                     createdAt,
                     ...additionalInformation,
                 });
-            } catch(error){
+            } catch (error) {
                 console.log('error creating the user', error.message);
             }
         }
+
         return userDocRef;
     };
     
