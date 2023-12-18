@@ -5,7 +5,7 @@ import '../../../src/categories.styles.scss';
 const Home = () => { 
   return (
     <div>
-      <Directory />;
+      <Directory />
       <Outlet />
 
     </div>
